@@ -4,6 +4,11 @@
  * column until a player gets four-in-a-row (horiz, vert, or diag) or until
  * board fills (tie)
  */
+class Player {
+	constructor (color) {
+		this.currPlayer = color;
+	}
+}
 
 class Game {
 	constructor (HEIGHT, WIDTH) {
@@ -33,22 +38,24 @@ class Game {
 	}
 
 	makeHtmlGameHeader () {
+		this.startGameClick = this.startGame.bind(this);
 		const header = document.getElementById('header');
 		const startBtn = document.createElement('button');
 		startBtn.setAttribute('id', 'startBtn');
 		startBtn.innerText = 'Start!';
-		startBtn.addEventListener('click', this.startGame.bind(this));
+		startBtn.addEventListener('click', this.startGameClick);
 
 		header.append(startBtn);
 	}
 
 	/** makeHtmlBoard: make HTML table and row of column tops. */
 	makeHtmlBoard () {
+		this.handleGameClick = this.handleClick.bind(this);
 		const board = document.getElementById('board');
 		// make column tops (clickable area for adding a piece to that column)
 		const top = document.createElement('tr');
 		top.setAttribute('id', 'column-top');
-		top.addEventListener('click', this.handleClick.bind(this));
+		top.addEventListener('click', this.handleGameClick);
 
 		for (let x = 0; x < this.WIDTH; x++) {
 			const headCell = document.createElement('td');
@@ -92,7 +99,7 @@ class Game {
 	/** endGame: announce game end */
 	endGame (msg) {
 		const columnTop = document.getElementById('column-top');
-		columnTop.removeEventListener('click', this.handleClick.bind(this));
+		columnTop.removeEventListener('click', this.handleGameClick);
 		alert(msg);
 	}
 	/** handleClick: handle click of column top to play piece */
@@ -153,4 +160,6 @@ class Game {
 	}
 }
 
+new Player('purple');
+new Player('peach');
 new Game(6, 7);
