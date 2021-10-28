@@ -1,4 +1,18 @@
-/* game board table */
+#startBtn {
+	transition: 0.65s;
+	position: relative;
+	left: 40%;
+	margin: 5px 10px;
+	padding: 5px 10px;
+	border: 0px;
+	border-radius: 5px;
+	background-color: #57cfff;
+	font-size: 20px;
+}
+#startBtn:hover {
+	background-color: gold;
+	cursor: pointer;
+}
 
 #board {
 	position: absolute;
