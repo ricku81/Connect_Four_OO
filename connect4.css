@@ -1,7 +1,14 @@
+/* #header {
+	background-color: lightgray;
+} */
+
+input {
+	margin: 5px 10px;
+	padding: 5px 10px;
+}
+
 #startBtn {
 	transition: 0.65s;
-	position: relative;
-	left: 40%;
 	margin: 5px 10px;
 	padding: 5px 10px;
 	border: 0px;

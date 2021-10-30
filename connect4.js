@@ -4,9 +4,10 @@
  * column until a player gets four-in-a-row (horiz, vert, or diag) or until
  * board fills (tie)
  */
+
 class Player {
 	constructor (color) {
-		this.currPlayer = color;
+		this.color = color;
 	}
 }
 
@@ -14,7 +15,7 @@ class Game {
 	constructor (HEIGHT, WIDTH) {
 		this.WIDTH = WIDTH;
 		this.HEIGHT = HEIGHT;
-		this.currPlayer = 1; // active player: 1 or 2
+		this.currPlayer = p1.color; // active player: 1 or 2
 		this.board = []; // array of rows, each row is array of cells  (board[y][x])
 		this.makeHtmlGameHeader();
 	}
@@ -23,9 +24,10 @@ class Game {
 		for (let y = 0; y < this.HEIGHT; y++) {
 			this.board.push(Array.from({ length: this.WIDTH }));
 		}
+		console.log(this.board);
 	}
 
-	startGame () {
+	startGame (evt) {
 		const startBtn = document.getElementById('startBtn');
 		const board = document.getElementById('board');
 		if (board.innerHTML !== '') {
@@ -33,19 +35,20 @@ class Game {
 			this.board = [];
 		}
 		startBtn.innerText = 'Reset!';
+		evt.preventDefault();
 		this.makeBoard();
 		this.makeHtmlBoard();
 	}
 
 	makeHtmlGameHeader () {
 		this.startGameClick = this.startGame.bind(this);
-		const header = document.getElementById('header');
+		const form = document.querySelector('form');
 		const startBtn = document.createElement('button');
 		startBtn.setAttribute('id', 'startBtn');
 		startBtn.innerText = 'Start!';
 		startBtn.addEventListener('click', this.startGameClick);
 
-		header.append(startBtn);
+		form.append(startBtn);
 	}
 
 	/** makeHtmlBoard: make HTML table and row of column tops. */
@@ -90,7 +93,7 @@ class Game {
 	placeInTable (y, x) {
 		const piece = document.createElement('div');
 		piece.classList.add('piece');
-		piece.classList.add(`p${this.currPlayer}`);
+		piece.classList.add(`${this.currPlayer}`);
 		piece.style.top = -50 * (y + 2);
 
 		const spot = document.getElementById(`${y}-${x}`);
@@ -128,7 +131,7 @@ class Game {
 		}
 
 		// switch players
-		this.currPlayer = this.currPlayer === 1 ? 2 : 1;
+		this.currPlayer = this.currPlayer === p1 ? p2 : p1;
 	}
 	/** checkForWin: check board cell-by-cell for "does a win start here?" */
 	checkForWin () {
@@ -160,6 +163,4 @@ class Game {
 	}
 }
 
-new Player('purple');
-new Player('peach');
 new Game(6, 7);
