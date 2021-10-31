@@ -15,7 +15,8 @@ class Game {
 	constructor (HEIGHT, WIDTH) {
 		this.WIDTH = WIDTH;
 		this.HEIGHT = HEIGHT;
-		this.currPlayer = p1.color; // active player: 1 or 2
+		this.players = [];
+		this.currPlayer = undefined;
 		this.board = []; // array of rows, each row is array of cells  (board[y][x])
 		this.makeHtmlGameHeader();
 	}
@@ -24,18 +25,26 @@ class Game {
 		for (let y = 0; y < this.HEIGHT; y++) {
 			this.board.push(Array.from({ length: this.WIDTH }));
 		}
-		console.log(this.board);
 	}
 
 	startGame (evt) {
+		const player1 = document.getElementById('p1');
+		const player2 = document.getElementById('p2');
 		const startBtn = document.getElementById('startBtn');
 		const board = document.getElementById('board');
 		if (board.innerHTML !== '') {
 			board.innerHTML = '';
 			this.board = [];
 		}
-		startBtn.innerText = 'Reset!';
 		evt.preventDefault();
+		startBtn.innerText = 'Reset!';
+		let p1 = new Player(player1.value);
+		let p2 = new Player(player2.value);
+		this.players.push(p1.color);
+		this.players.push(p2.color);
+		this.currPlayer = this.players[0];
+		player1.value = '';
+		player2.value = '';
 		this.makeBoard();
 		this.makeHtmlBoard();
 	}
@@ -95,6 +104,7 @@ class Game {
 		piece.classList.add('piece');
 		piece.classList.add(`${this.currPlayer}`);
 		piece.style.top = -50 * (y + 2);
+		piece.style.backgroundColor = `${this.currPlayer}`;
 
 		const spot = document.getElementById(`${y}-${x}`);
 		spot.append(piece);
@@ -131,7 +141,7 @@ class Game {
 		}
 
 		// switch players
-		this.currPlayer = this.currPlayer === p1 ? p2 : p1;
+		this.currPlayer = this.currPlayer === this.players[0] ? this.players[1] : this.players[0];
 	}
 	/** checkForWin: check board cell-by-cell for "does a win start here?" */
 	checkForWin () {
@@ -163,4 +173,4 @@ class Game {
 	}
 }
 
-new Game(6, 7);
+let game1 = new Game(6, 7);
